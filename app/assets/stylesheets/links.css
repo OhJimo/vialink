@@ -1,0 +1,171 @@
+/* Links Form Styles */
+.link-form-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: #1f2937;
+}
+
+.error-box {
+  background: #fee;
+  border: 1px solid #fcc;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.error-box h3 {
+  margin-top: 0;
+  color: #dc2626;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #374151;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-color-input {
+  width: 100%;
+  padding: 10px;
+  height: 50px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-submit {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+  padding: 12px 40px;
+  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+/* Proxy Page Styles */
+body.proxy-page,
+html.proxy-page {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.proxy-page #content-frame {
+  width: 100%;
+  height: calc(100% - 80px);
+  border: none;
+  display: block;
+}
+
+.proxy-page #cta-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+}
+
+.proxy-page .cta-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.proxy-page .cta-text {
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.proxy-page .cta-button {
+  background: white;
+  color: #1f2937;
+  padding: 10px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s;
+  white-space: nowrap;
+}
+
+.proxy-page .cta-button:hover {
+  transform: scale(1.05);
+}
+
+.proxy-page #iframe-error {
+  display: none;
+  text-align: center;
+  padding: 50px 20px;
+  background: #f9fafb;
+  height: calc(100% - 80px);
+  box-sizing: border-box;
+}
+
+.proxy-page #iframe-error h2 {
+  color: #ef4444;
+  margin-bottom: 10px;
+}
+
+.proxy-page #iframe-error p {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.proxy-page #iframe-error a {
+  color: #2563eb;
+  text-decoration: none;
+}

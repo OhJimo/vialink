@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  original_url: MyString
+  code: MyString
+  cta_text: MyString
+  cta_link: MyString
+  cta_button_text: MyString
+  cta_position: MyString
+  cta_color: MyString
+
+two:
+  original_url: MyString
+  code: MyString
+  cta_text: MyString
+  cta_link: MyString
+  cta_button_text: MyString
+  cta_position: MyString
+  cta_color: MyString
