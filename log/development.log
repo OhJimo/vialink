@@ -137,3 +137,78 @@ Processing by LinksController#new as HTML
 Completed 200 OK in 36ms (Views: 9.6ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.5ms)
 
 
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
+Migrating to InstallMotorAdmin (20251003163126)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE TABLE "motor_queries" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "description" text, "sql_body" text NOT NULL, "preferences" text NOT NULL, "author_id" bigint, "author_type" varchar, "deleted_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_queries_on_updated_at" ON "motor_queries" ("updated_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_queries_name_unique_index" ON "motor_queries" ("name") WHERE deleted_at IS NULL /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_dashboards" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar NOT NULL, "description" text, "preferences" text NOT NULL, "author_id" bigint, "author_type" varchar, "deleted_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_dashboards_on_updated_at" ON "motor_dashboards" ("updated_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_dashboards_title_unique_index" ON "motor_dashboards" ("title") WHERE deleted_at IS NULL /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_forms" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "description" text, "api_path" text NOT NULL, "http_method" varchar NOT NULL, "preferences" text NOT NULL, "author_id" bigint, "author_type" varchar, "deleted_at" datetime(6), "api_config_name" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_motor_forms_on_updated_at" ON "motor_forms" ("updated_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_forms_name_unique_index" ON "motor_forms" ("name") WHERE deleted_at IS NULL /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_resources" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "preferences" text NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_motor_resources_on_name" ON "motor_resources" ("name") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_resources_on_updated_at" ON "motor_resources" ("updated_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_configs" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "key" varchar NOT NULL, "value" text NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_motor_configs_on_key" ON "motor_configs" ("key") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_configs_on_updated_at" ON "motor_configs" ("updated_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_alerts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "query_id" integer NOT NULL, "name" varchar NOT NULL, "description" text, "to_emails" text NOT NULL, "is_enabled" boolean DEFAULT 1 NOT NULL, "preferences" text NOT NULL, "author_id" bigint, "author_type" varchar, "deleted_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_8828951644"
+FOREIGN KEY ("query_id")
+  REFERENCES "motor_queries" ("id")
+) /*application='SniplyClone'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_motor_alerts_on_query_id" ON "motor_alerts" ("query_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_alerts_on_updated_at" ON "motor_alerts" ("updated_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_alerts_name_unique_index" ON "motor_alerts" ("name") WHERE deleted_at IS NULL /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_alert_locks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "alert_id" integer NOT NULL, "lock_timestamp" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_38d1b2960e"
+FOREIGN KEY ("alert_id")
+  REFERENCES "motor_alerts" ("id")
+) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_alert_locks_on_alert_id" ON "motor_alert_locks" ("alert_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_motor_alert_locks_on_alert_id_and_lock_timestamp" ON "motor_alert_locks" ("alert_id", "lock_timestamp") /*application='SniplyClone'*/[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE TABLE "motor_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_tags_name_unique_index" ON "motor_tags" ("name") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_taggable_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "taggable_id" bigint NOT NULL, "taggable_type" varchar NOT NULL, CONSTRAINT "fk_rails_ba9ebe2280"
+FOREIGN KEY ("tag_id")
+  REFERENCES "motor_tags" ("id")
+) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_taggable_tags_on_tag_id" ON "motor_taggable_tags" ("tag_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_polymorphic_association_tag_index" ON "motor_taggable_tags" ("taggable_id", "taggable_type", "tag_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_audits" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "auditable_id" varchar, "auditable_type" varchar, "associated_id" varchar, "associated_type" varchar, "user_id" bigint, "user_type" varchar, "username" varchar, "action" varchar, "audited_changes" text, "version" bigint DEFAULT 0, "comment" text, "remote_address" varchar, "request_uuid" varchar, "created_at" datetime(6)) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_api_configs" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "url" varchar NOT NULL, "preferences" text NOT NULL, "credentials" text NOT NULL, "description" text, "deleted_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_api_configs_name_unique_index" ON "motor_api_configs" ("name") WHERE deleted_at IS NULL /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_notes" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "body" text, "author_id" bigint, "author_type" varchar, "record_id" varchar NOT NULL, "record_type" varchar NOT NULL, "deleted_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_notes_record_id_record_type_index" ON "motor_notes" ("record_id", "record_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_notes_author_id_author_type_index" ON "motor_notes" ("author_id", "author_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_note_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_note_tags_name_unique_index" ON "motor_note_tags" ("name") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_note_tag_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "note_id" integer NOT NULL, CONSTRAINT "fk_rails_f0bd88b67d"
+FOREIGN KEY ("tag_id")
+  REFERENCES "motor_note_tags" ("id")
+, CONSTRAINT "fk_rails_5958bda098"
+FOREIGN KEY ("note_id")
+  REFERENCES "motor_notes" ("id")
+) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_note_tag_tags_on_tag_id" ON "motor_note_tag_tags" ("tag_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_note_tags_note_id_tag_id_index" ON "motor_note_tag_tags" ("note_id", "tag_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_reminders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "author_id" bigint NOT NULL, "author_type" varchar NOT NULL, "recipient_id" bigint NOT NULL, "recipient_type" varchar NOT NULL, "record_id" varchar, "record_type" varchar, "scheduled_at" datetime(6) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_reminders_on_scheduled_at" ON "motor_reminders" ("scheduled_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_reminders_author_id_author_type_index" ON "motor_reminders" ("author_id", "author_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_reminders_recipient_id_recipient_type_index" ON "motor_reminders" ("recipient_id", "recipient_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_reminders_record_id_record_type_index" ON "motor_reminders" ("record_id", "record_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_notifications" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar NOT NULL, "description" text, "recipient_id" bigint NOT NULL, "recipient_type" varchar NOT NULL, "record_id" varchar, "record_type" varchar, "status" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_notifications_recipient_id_recipient_type_index" ON "motor_notifications" ("recipient_id", "recipient_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_notifications_record_id_record_type_index" ON "motor_notifications" ("record_id", "record_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_auditable_index" ON "motor_audits" ("auditable_type", "auditable_id", "version") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_auditable_associated_index" ON "motor_audits" ("associated_type", "associated_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_auditable_user_index" ON "motor_audits" ("user_id", "user_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_audits_on_request_uuid" ON "motor_audits" ("request_uuid") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_audits_on_created_at" ON "motor_audits" ("created_at") /*application='SniplyClone'*/[0m
+  [1m[36m#<Class:0x000000012bb19398> Create (0.2ms)[0m  [1m[32mINSERT INTO "motor_configs" ("key", "value", "created_at", "updated_at") VALUES ('header.links', '[{"name":"⭐ Star on GitHub","path":"https://github.com/motor-admin/motor-admin-rails"}]', '2025-10-03 16:31:30.279015', '2025-10-03 16:31:30.279015') RETURNING "id" /*application='SniplyClone'*/[0m
+  [1m[36m#<Class:0x000000012bb19398> Create (0.0ms)[0m  [1m[32mINSERT INTO "motor_api_configs" ("name", "url", "preferences", "credentials", "description", "deleted_at", "created_at", "updated_at") VALUES ('origin', '/', '{}', '{}', NULL, NULL, '2025-10-03 16:31:30.286094', '2025-10-03 16:31:30.286094') RETURNING "id" /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20251003163126') RETURNING "version" /*application='SniplyClone'*/[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
