@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html class="proxy-page">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Poplink</title>
+  <%= stylesheet_link_tag "links", "data-turbo-track": "reload" %>
+</head>
+<body class="proxy-page">
+  <iframe id="content-frame" src="<%= @link.original_url %>"></iframe>
+
+  <div id="iframe-error">
+    <h2>⚠️ 이 콘텐츠는 프레임에서 표시할 수 없습니다</h2>
+    <p>대상 웹사이트의 보안 설정으로 인해 여기에 표시할 수 없습니다.</p>
+    <p><a href="<%= @link.original_url %>" target="_blank">여기를 클릭하여 원본 페이지를 방문하세요</a></p>
+  </div>
+
+  <div id="cta-overlay" style="<%= cta_overlay_style(@link) %>">
+    <div class="cta-content">
+      <% if @link.cta_text.present? %>
+        <span class="cta-text"><%= @link.cta_text %></span>
+      <% end %>
+      <% if @link.cta_link.present? %>
+        <a href="<%= @link.cta_link %>" class="cta-button" target="_blank">
+          <%= @link.cta_button_text || '자세히 보기' %>
+        </a>
+      <% end %>
+    </div>
+  </div>
+
+  <script>
+    // Detect if iframe fails to load (X-Frame-Options blocking)
+    const iframe = document.getElementById('content-frame');
+    const errorDiv = document.getElementById('iframe-error');
+
+    iframe.addEventListener('error', function() {
+      iframe.style.display = 'none';
+      errorDiv.style.display = 'block';
+    });
+
+    // Timeout fallback (some browsers don't fire error event)
+    setTimeout(function() {
+      try {
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        if (!iframeDoc) {
+          iframe.style.display = 'none';
+          errorDiv.style.display = 'block';
+        }
+      } catch (e) {
+        // Cross-origin access denied - this is actually normal
+        // Only show error if iframe is completely empty
+      }
+    }, 3000);
+  </script>
+</body>
+</html>

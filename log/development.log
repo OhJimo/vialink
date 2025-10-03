@@ -1,0 +1,139 @@
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY) /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-10-03 07:58:12.544986', '2025-10-03 07:58:12.544988') RETURNING "key" /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
+Migrating to CreateLinks (20251003075750)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "links" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "original_url" varchar NOT NULL, "code" varchar NOT NULL, "cta_text" varchar, "cta_link" varchar, "cta_button_text" varchar, "cta_position" varchar, "cta_color" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_links_on_code" ON "links" ("code") /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20251003075750') RETURNING "version" /*application='SniplyClone'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
+Started GET "/" for ::1 at 2025-10-03 17:33:10 +0900
+  [1m[36mActiveRecord::SchemaMigration Load (1.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
+Processing by LinksController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering links/new.html.erb within layouts/application
+  Rendered links/new.html.erb within layouts/application (Duration: 9.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 20.7ms | GC: 0.0ms)
+Completed 200 OK in 103ms (Views: 26.9ms | ActiveRecord: 1.4ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/links" for ::1 at 2025-10-03 17:33:57 +0900
+Processing by LinksController#create as TURBO_STREAM
+  Parameters: {"authenticity_token" => "[FILTERED]", "link" => {"original_url" => "https://v.daum.net/v/20251003173112430", "cta_text" => "", "cta_link" => "https://www.google.com/", "cta_button_text" => "", "cta_position" => "center", "cta_color" => "#2563eb"}, "commit" => "Create Link"}
+  [1m[36mTRANSACTION (4.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:8:in 'LinksController#create'
+  [1m[36mLink Exists? (9.0ms)[0m  [1m[34mSELECT 1 AS one FROM "links" WHERE "links"."code" = 'g04IzA' LIMIT 1 /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:8:in 'LinksController#create'
+  [1m[36mLink Create (0.3ms)[0m  [1m[32mINSERT INTO "links" ("original_url", "code", "cta_text", "cta_link", "cta_button_text", "cta_position", "cta_color", "created_at", "updated_at") VALUES ('https://v.daum.net/v/20251003173112430', 'g04IzA', '', 'https://www.google.com/', '', 'center', '#2563eb', '2025-10-03 08:33:57.360102', '2025-10-03 08:33:57.360102') RETURNING "id" /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:8:in 'LinksController#create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:8:in 'LinksController#create'
+Redirected to http://localhost:3001/g04IzA
+Completed 302 Found in 59ms (ActiveRecord: 13.6ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/g04IzA" for ::1 at 2025-10-03 17:33:57 +0900
+Processing by LinksController#show as TURBO_STREAM
+  Parameters: {"code" => "g04IzA"}
+  [1m[36mLink Load (0.1ms)[0m  [1m[34mSELECT "links".* FROM "links" WHERE "links"."code" = 'g04IzA' LIMIT 1 /*action='show',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:16:in 'LinksController#show'
+  Rendering layout layouts/application.html.erb
+  Rendering links/show.html.erb within layouts/application
+  Rendered links/show.html.erb within layouts/application (Duration: 2.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 4.4ms | GC: 0.0ms)
+Completed 200 OK in 31ms (Views: 5.0ms | ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for ::1 at 2025-10-03 17:34:20 +0900
+Processing by LinksController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering links/new.html.erb within layouts/application
+  Rendered links/new.html.erb within layouts/application (Duration: 12.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 14.4ms | GC: 0.0ms)
+Completed 200 OK in 39ms (Views: 15.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for ::1 at 2025-10-03 17:35:01 +0900
+Processing by LinksController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering links/new.html.erb within layouts/application
+  Rendered links/new.html.erb within layouts/application (Duration: 12.4ms | GC: 0.5ms)
+  Rendered layout layouts/application.html.erb (Duration: 17.0ms | GC: 0.5ms)
+Completed 200 OK in 71ms (Views: 18.1ms | ActiveRecord: 6.2ms (0 queries, 0 cached) | GC: 6.0ms)
+
+
+Started POST "/links" for ::1 at 2025-10-03 17:35:26 +0900
+Processing by LinksController#create as TURBO_STREAM
+  Parameters: {"authenticity_token" => "[FILTERED]", "link" => {"original_url" => "https://v.daum.net/v/20251003173112430", "cta_text" => "클릭!", "cta_link" => "https://www.google.com/", "cta_button_text" => "자세히 보기", "cta_position" => "center", "cta_color" => "#2563eb"}, "commit" => "링크 생성"}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:8:in 'LinksController#create'
+  [1m[36mLink Exists? (1.3ms)[0m  [1m[34mSELECT 1 AS one FROM "links" WHERE "links"."code" = '5MpHnO' LIMIT 1 /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:8:in 'LinksController#create'
+  [1m[36mLink Create (0.6ms)[0m  [1m[32mINSERT INTO "links" ("original_url", "code", "cta_text", "cta_link", "cta_button_text", "cta_position", "cta_color", "created_at", "updated_at") VALUES ('https://v.daum.net/v/20251003173112430', '5MpHnO', '클릭!', 'https://www.google.com/', '자세히 보기', 'center', '#2563eb', '2025-10-03 08:35:26.920317', '2025-10-03 08:35:26.920317') RETURNING "id" /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:8:in 'LinksController#create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:8:in 'LinksController#create'
+Redirected to http://localhost:3001/5MpHnO
+Completed 302 Found in 59ms (ActiveRecord: 2.3ms (2 queries, 0 cached) | GC: 2.0ms)
+
+
+Started GET "/5MpHnO" for ::1 at 2025-10-03 17:35:26 +0900
+Processing by LinksController#show as TURBO_STREAM
+  Parameters: {"code" => "5MpHnO"}
+  [1m[36mLink Load (0.1ms)[0m  [1m[34mSELECT "links".* FROM "links" WHERE "links"."code" = '5MpHnO' LIMIT 1 /*action='show',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:16:in 'LinksController#show'
+  Rendering layout layouts/application.html.erb
+  Rendering links/show.html.erb within layouts/application
+  Rendered links/show.html.erb within layouts/application (Duration: 0.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.6ms | GC: 0.0ms)
+Completed 200 OK in 36ms (Views: 4.8ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for ::1 at 2025-10-03 17:35:56 +0900
+Processing by LinksController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering links/new.html.erb within layouts/application
+  Rendered links/new.html.erb within layouts/application (Duration: 8.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 9.9ms | GC: 0.0ms)
+Completed 200 OK in 33ms (Views: 10.8ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/links" for ::1 at 2025-10-03 17:38:08 +0900
+Processing by LinksController#create as TURBO_STREAM
+  Parameters: {"authenticity_token" => "[FILTERED]", "link" => {"original_url" => "https://v.daum.net/v/20251003173112430", "cta_text" => "클릭!", "cta_link" => "https://www.google.com/", "cta_button_text" => "자세히 보기", "cta_position" => "center", "cta_color" => "#2563eb"}, "commit" => "링크 생성"}
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:8:in 'LinksController#create'
+  [1m[36mLink Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "links" WHERE "links"."code" = 'sGVmhG' LIMIT 1 /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:8:in 'LinksController#create'
+  [1m[36mLink Create (0.1ms)[0m  [1m[32mINSERT INTO "links" ("original_url", "code", "cta_text", "cta_link", "cta_button_text", "cta_position", "cta_color", "created_at", "updated_at") VALUES ('https://v.daum.net/v/20251003173112430', 'sGVmhG', '클릭!', 'https://www.google.com/', '자세히 보기', 'center', '#2563eb', '2025-10-03 08:38:08.097490', '2025-10-03 08:38:08.097490') RETURNING "id" /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:8:in 'LinksController#create'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:8:in 'LinksController#create'
+Redirected to http://localhost:3001/sGVmhG
+Completed 302 Found in 40ms (ActiveRecord: 1.8ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/sGVmhG" for ::1 at 2025-10-03 17:38:08 +0900
+Processing by LinksController#show as TURBO_STREAM
+  Parameters: {"code" => "sGVmhG"}
+  [1m[36mLink Load (0.3ms)[0m  [1m[34mSELECT "links".* FROM "links" WHERE "links"."code" = 'sGVmhG' LIMIT 1 /*action='show',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:16:in 'LinksController#show'
+  Rendering layout layouts/application.html.erb
+  Rendering links/show.html.erb within layouts/application
+  Rendered links/show.html.erb within layouts/application (Duration: 0.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.3ms | GC: 0.0ms)
+Completed 200 OK in 23ms (Views: 1.8ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for ::1 at 2025-10-03 17:38:09 +0900
+Processing by LinksController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering links/new.html.erb within layouts/application
+  Rendered links/new.html.erb within layouts/application (Duration: 6.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 7.4ms | GC: 0.5ms)
+Completed 200 OK in 36ms (Views: 9.6ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.5ms)
+
+
