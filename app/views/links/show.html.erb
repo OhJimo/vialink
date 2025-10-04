@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html class="proxy-page">
+<html class="proxy-page" data-turbo="false">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Poplink</title>
-  <%= stylesheet_link_tag "links", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "links" %>
+  <style>
+    /* Critical CSS to prevent layout shift */
+    html.proxy-page, body.proxy-page {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    .proxy-page #content-frame {
+      width: 100%;
+      height: calc(100% - 80px);
+      border: none;
+      display: block;
+    }
+    .proxy-page #cta-overlay {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      z-index: 9999;
+    }
+  </style>
 </head>
 <body class="proxy-page">
   <iframe id="content-frame" src="<%= @link.original_url %>"></iframe>
