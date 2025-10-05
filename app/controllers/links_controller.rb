@@ -14,6 +14,7 @@ class LinksController < ApplicationController
 
   def show
     @link = Link.find_by!(code: params[:code] || params[:id])
+    render layout: false
   end
 
   private
