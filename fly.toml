@@ -9,6 +9,9 @@ console_command = '/rails/bin/rails console'
 
 [build]
 
+[deploy]
+  release_command = '/rails/bin/rails db:migrate'
+
 [env]
   DATABASE_URL = 'sqlite3:///data/production.sqlite3'
   PORT = '8080'
