@@ -1,4 +1,24 @@
 <div class="link-form-container">
-  <h1 class="page-title">Poplink - 링크 만들기</h1>
+  <h1 class="page-title">Vialink - 링크 만들기</h1>
+
+  <% if user_signed_in? %>
+    <div class="info-box">
+      <strong>이번 달 남은 링크:</strong>
+      <%= current_user.monthly_link_limit - current_user.current_month_links_count %>개 /
+      <%= current_user.monthly_link_limit %>개
+      <% if current_user.free? %>
+        <span class="upgrade-hint">
+          (Pro 또는 Lifetime으로 업그레이드하여 더 많은 링크를 만드세요!)
+        </span>
+      <% end %>
+    </div>
+  <% end %>
+
   <%= render 'form' %>
+
+  <% if user_signed_in? %>
+    <div class="back-link">
+      <%= link_to '← 대시보드로 돌아가기', dashboard_path %>
+    </div>
+  <% end %>
 </div>

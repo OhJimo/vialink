@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>링크가 만료되었습니다 - Vialink</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+    .icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #333;
+      margin: 0 0 16px 0;
+      font-size: 28px;
+    }
+    p {
+      color: #666;
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 0 0 24px 0;
+    }
+    .btn {
+      display: inline-block;
+      background: #667eea;
+      color: white;
+      padding: 12px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: #5568d3;
+    }
+    .info {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid #eee;
+      font-size: 14px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">⏰</div>
+    <h1>링크가 만료되었습니다</h1>
+    <p>
+      이 링크는 생성 후 일정 기간이 지나 더 이상 사용할 수 없습니다.<br>
+      링크 생성자에게 새로운 링크를 요청해주세요.
+    </p>
+    <a href="<%= root_path %>" class="btn">Vialink 홈으로</a>
+
+    <div class="info">
+      Vialink는 플랜별로 다른 링크 보관 기간을 제공합니다.<br>
+      • Free: 5일 • Pro: 30일 • Lifetime: 영구
+    </div>
+  </div>
+</body>
+</html>

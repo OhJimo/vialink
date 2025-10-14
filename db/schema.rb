@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_03_163126) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_132114) do
   create_table "links", force: :cascade do |t|
     t.string "original_url", null: false
     t.string "code", null: false
@@ -21,7 +21,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_03_163126) do
     t.string "cta_color"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.datetime "expires_at"
+    t.integer "click_count", default: 0, null: false
     t.index ["code"], name: "index_links_on_code", unique: true
+    t.index ["expires_at"], name: "index_links_on_expires_at"
+    t.index ["user_id"], name: "index_links_on_user_id"
   end
 
   create_table "motor_alert_locks", force: :cascade do |t|
@@ -217,6 +222,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_03_163126) do
     t.index ["name"], name: "motor_tags_name_unique_index", unique: true
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "plan", default: 0, null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  add_foreign_key "links", "users"
   add_foreign_key "motor_alert_locks", "motor_alerts", column: "alert_id"
   add_foreign_key "motor_alerts", "motor_queries", column: "query_id"
   add_foreign_key "motor_note_tag_tags", "motor_note_tags", column: "tag_id"

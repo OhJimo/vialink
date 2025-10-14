@@ -1,1 +1,268 @@
 
+  [1m[35m (0.7ms)[0m  [1m[35mDROP TABLE IF EXISTS "links" /*application='SniplyClone'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "links" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "original_url" varchar NOT NULL, "code" varchar NOT NULL, "cta_text" varchar, "cta_link" varchar, "cta_button_text" varchar, "cta_position" varchar, "cta_color" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_links_on_code" ON "links" ("code") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_alert_locks" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_alert_locks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "alert_id" integer NOT NULL, "lock_timestamp" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_motor_alert_locks_on_alert_id_and_lock_timestamp" ON "motor_alert_locks" ("alert_id", "lock_timestamp") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_alert_locks_on_alert_id" ON "motor_alert_locks" ("alert_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_alerts" /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "motor_alerts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "query_id" integer NOT NULL, "name" varchar NOT NULL, "description" text, "to_emails" text NOT NULL, "is_enabled" boolean DEFAULT 1 NOT NULL, "preferences" text NOT NULL, "author_id" bigint, "author_type" varchar, "deleted_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_alerts_name_unique_index" ON "motor_alerts" ("name") WHERE deleted_at IS NULL /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_motor_alerts_on_query_id" ON "motor_alerts" ("query_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_alerts_on_updated_at" ON "motor_alerts" ("updated_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_api_configs" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_api_configs" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "url" varchar NOT NULL, "preferences" text NOT NULL, "credentials" text NOT NULL, "description" text, "deleted_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_api_configs_name_unique_index" ON "motor_api_configs" ("name") WHERE deleted_at IS NULL /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_audits" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_audits" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "auditable_id" varchar, "auditable_type" varchar, "associated_id" varchar, "associated_type" varchar, "user_id" bigint, "user_type" varchar, "username" varchar, "action" varchar, "audited_changes" text, "version" bigint DEFAULT 0, "comment" text, "remote_address" varchar, "request_uuid" varchar, "created_at" datetime(6)) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_auditable_associated_index" ON "motor_audits" ("associated_type", "associated_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_auditable_index" ON "motor_audits" ("auditable_type", "auditable_id", "version") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_audits_on_created_at" ON "motor_audits" ("created_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_audits_on_request_uuid" ON "motor_audits" ("request_uuid") /*application='SniplyClone'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE INDEX "motor_auditable_user_index" ON "motor_audits" ("user_id", "user_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_configs" /*application='SniplyClone'*/[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE TABLE "motor_configs" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "key" varchar NOT NULL, "value" text NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_motor_configs_on_key" ON "motor_configs" ("key") /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_motor_configs_on_updated_at" ON "motor_configs" ("updated_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_dashboards" /*application='SniplyClone'*/[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE TABLE "motor_dashboards" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar NOT NULL, "description" text, "preferences" text NOT NULL, "author_id" bigint, "author_type" varchar, "deleted_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_dashboards_title_unique_index" ON "motor_dashboards" ("title") WHERE deleted_at IS NULL /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_dashboards_on_updated_at" ON "motor_dashboards" ("updated_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_forms" /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "motor_forms" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "description" text, "api_path" text NOT NULL, "http_method" varchar NOT NULL, "preferences" text NOT NULL, "author_id" bigint, "author_type" varchar, "deleted_at" datetime(6), "api_config_name" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_forms_name_unique_index" ON "motor_forms" ("name") WHERE deleted_at IS NULL /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_forms_on_updated_at" ON "motor_forms" ("updated_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_note_tag_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "motor_note_tag_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "note_id" integer NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_note_tags_note_id_tag_id_index" ON "motor_note_tag_tags" ("note_id", "tag_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_note_tag_tags_on_tag_id" ON "motor_note_tag_tags" ("tag_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_note_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "motor_note_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_note_tags_name_unique_index" ON "motor_note_tags" ("name") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_notes" /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "motor_notes" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "body" text, "author_id" bigint, "author_type" varchar, "record_id" varchar NOT NULL, "record_type" varchar NOT NULL, "deleted_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_notes_author_id_author_type_index" ON "motor_notes" ("author_id", "author_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_notes_record_id_record_type_index" ON "motor_notes" ("record_id", "record_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_notifications" /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "motor_notifications" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar NOT NULL, "description" text, "recipient_id" bigint NOT NULL, "recipient_type" varchar NOT NULL, "record_id" varchar, "record_type" varchar, "status" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_notifications_recipient_id_recipient_type_index" ON "motor_notifications" ("recipient_id", "recipient_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_notifications_record_id_record_type_index" ON "motor_notifications" ("record_id", "record_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_queries" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_queries" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "description" text, "sql_body" text NOT NULL, "preferences" text NOT NULL, "author_id" bigint, "author_type" varchar, "deleted_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_queries_name_unique_index" ON "motor_queries" ("name") WHERE deleted_at IS NULL /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_queries_on_updated_at" ON "motor_queries" ("updated_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_reminders" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_reminders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "author_id" bigint NOT NULL, "author_type" varchar NOT NULL, "recipient_id" bigint NOT NULL, "recipient_type" varchar NOT NULL, "record_id" varchar, "record_type" varchar, "scheduled_at" datetime(6) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_reminders_author_id_author_type_index" ON "motor_reminders" ("author_id", "author_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_reminders_recipient_id_recipient_type_index" ON "motor_reminders" ("recipient_id", "recipient_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "motor_reminders_record_id_record_type_index" ON "motor_reminders" ("record_id", "record_type") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_reminders_on_scheduled_at" ON "motor_reminders" ("scheduled_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_resources" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_resources" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "preferences" text NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_motor_resources_on_name" ON "motor_resources" ("name") /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_motor_resources_on_updated_at" ON "motor_resources" ("updated_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_taggable_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_taggable_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "taggable_id" bigint NOT NULL, "taggable_type" varchar NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_motor_taggable_tags_on_tag_id" ON "motor_taggable_tags" ("tag_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_polymorphic_association_tag_index" ON "motor_taggable_tags" ("taggable_id", "taggable_type", "tag_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "motor_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_tags_name_unique_index" ON "motor_tags" ("name") /*application='SniplyClone'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[35mSQL (2.6ms)[0m  [1m[35mPRAGMA foreign_keys /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "amotor_alert_locks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "alert_id" integer NOT NULL, "lock_timestamp" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_amotor_alert_locks_on_alert_id" ON "amotor_alert_locks" ("alert_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_amotor_alert_locks_on_alert_id_and_lock_timestamp" ON "amotor_alert_locks" ("alert_id", "lock_timestamp") /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "amotor_alert_locks" ("id","alert_id","lock_timestamp","created_at","updated_at")
+                     SELECT "id","alert_id","lock_timestamp","created_at","updated_at" FROM "motor_alert_locks" /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "motor_alert_locks" /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "motor_alert_locks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "alert_id" integer NOT NULL, "lock_timestamp" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_38d1b2960e"
+FOREIGN KEY ("alert_id")
+  REFERENCES "motor_alerts" ("id")
+) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_motor_alert_locks_on_alert_id_and_lock_timestamp" ON "motor_alert_locks" ("alert_id", "lock_timestamp") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_alert_locks_on_alert_id" ON "motor_alert_locks" ("alert_id") /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "motor_alert_locks" ("id","alert_id","lock_timestamp","created_at","updated_at")
+                     SELECT "id","alert_id","lock_timestamp","created_at","updated_at" FROM "amotor_alert_locks" /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "amotor_alert_locks" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='SniplyClone'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[35mPRAGMA foreign_keys /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "amotor_alerts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "query_id" integer NOT NULL, "name" varchar NOT NULL, "description" text, "to_emails" text NOT NULL, "is_enabled" boolean DEFAULT 1 NOT NULL, "preferences" text NOT NULL, "author_id" bigint, "author_type" varchar, "deleted_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_amotor_alerts_on_updated_at" ON "amotor_alerts" ("updated_at") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_amotor_alerts_on_query_id" ON "amotor_alerts" ("query_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "tmotor_alerts_name_unique_index" ON "amotor_alerts" ("name") WHERE deleted_at IS NULL /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "amotor_alerts" ("id","query_id","name","description","to_emails","is_enabled","preferences","author_id","author_type","deleted_at","created_at","updated_at")
+                     SELECT "id","query_id","name","description","to_emails","is_enabled","preferences","author_id","author_type","deleted_at","created_at","updated_at" FROM "motor_alerts" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "motor_alerts" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_alerts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "query_id" integer NOT NULL, "name" varchar NOT NULL, "description" text, "to_emails" text NOT NULL, "is_enabled" boolean DEFAULT 1 NOT NULL, "preferences" text NOT NULL, "author_id" bigint, "author_type" varchar, "deleted_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_8828951644"
+FOREIGN KEY ("query_id")
+  REFERENCES "motor_queries" ("id")
+) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_alerts_name_unique_index" ON "motor_alerts" ("name") WHERE deleted_at IS NULL /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_alerts_on_query_id" ON "motor_alerts" ("query_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_alerts_on_updated_at" ON "motor_alerts" ("updated_at") /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "motor_alerts" ("id","query_id","name","description","to_emails","is_enabled","preferences","author_id","author_type","deleted_at","created_at","updated_at")
+                     SELECT "id","query_id","name","description","to_emails","is_enabled","preferences","author_id","author_type","deleted_at","created_at","updated_at" FROM "amotor_alerts" /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "amotor_alerts" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='SniplyClone'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[35mPRAGMA foreign_keys /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "amotor_note_tag_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "note_id" integer NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_amotor_note_tag_tags_on_tag_id" ON "amotor_note_tag_tags" ("tag_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "tmotor_note_tags_note_id_tag_id_index" ON "amotor_note_tag_tags" ("note_id", "tag_id") /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "amotor_note_tag_tags" ("id","tag_id","note_id")
+                     SELECT "id","tag_id","note_id" FROM "motor_note_tag_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "motor_note_tag_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_note_tag_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "note_id" integer NOT NULL, CONSTRAINT "fk_rails_f0bd88b67d"
+FOREIGN KEY ("tag_id")
+  REFERENCES "motor_note_tags" ("id")
+) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_note_tags_note_id_tag_id_index" ON "motor_note_tag_tags" ("note_id", "tag_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_note_tag_tags_on_tag_id" ON "motor_note_tag_tags" ("tag_id") /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "motor_note_tag_tags" ("id","tag_id","note_id")
+                     SELECT "id","tag_id","note_id" FROM "amotor_note_tag_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "amotor_note_tag_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='SniplyClone'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[35mPRAGMA foreign_keys /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "amotor_note_tag_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "note_id" integer NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_amotor_note_tag_tags_on_tag_id" ON "amotor_note_tag_tags" ("tag_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "tmotor_note_tags_note_id_tag_id_index" ON "amotor_note_tag_tags" ("note_id", "tag_id") /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "amotor_note_tag_tags" ("id","tag_id","note_id")
+                     SELECT "id","tag_id","note_id" FROM "motor_note_tag_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "motor_note_tag_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_note_tag_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "note_id" integer NOT NULL, CONSTRAINT "fk_rails_f0bd88b67d"
+FOREIGN KEY ("tag_id")
+  REFERENCES "motor_note_tags" ("id")
+, CONSTRAINT "fk_rails_5958bda098"
+FOREIGN KEY ("note_id")
+  REFERENCES "motor_notes" ("id")
+) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_note_tags_note_id_tag_id_index" ON "motor_note_tag_tags" ("note_id", "tag_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_note_tag_tags_on_tag_id" ON "motor_note_tag_tags" ("tag_id") /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "motor_note_tag_tags" ("id","tag_id","note_id")
+                     SELECT "id","tag_id","note_id" FROM "amotor_note_tag_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "amotor_note_tag_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='SniplyClone'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[35mPRAGMA foreign_keys /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "amotor_taggable_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "taggable_id" bigint NOT NULL, "taggable_type" varchar NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "tmotor_polymorphic_association_tag_index" ON "amotor_taggable_tags" ("taggable_id", "taggable_type", "tag_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_amotor_taggable_tags_on_tag_id" ON "amotor_taggable_tags" ("tag_id") /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "amotor_taggable_tags" ("id","tag_id","taggable_id","taggable_type")
+                     SELECT "id","tag_id","taggable_id","taggable_type" FROM "motor_taggable_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "motor_taggable_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "motor_taggable_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "taggable_id" bigint NOT NULL, "taggable_type" varchar NOT NULL, CONSTRAINT "fk_rails_ba9ebe2280"
+FOREIGN KEY ("tag_id")
+  REFERENCES "motor_tags" ("id")
+) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_motor_taggable_tags_on_tag_id" ON "motor_taggable_tags" ("tag_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "motor_polymorphic_association_tag_index" ON "motor_taggable_tags" ("taggable_id", "taggable_type", "tag_id") /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "motor_taggable_tags" ("id","tag_id","taggable_id","taggable_type")
+                     SELECT "id","tag_id","taggable_id","taggable_type" FROM "amotor_taggable_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "amotor_taggable_tags" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='SniplyClone'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY) /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20251003163126) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20251003075750); /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-10-14 13:21:05.599113', '2025-10-14 13:21:05.599114') RETURNING "key" /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'schema_sha1' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', '38e2b95f78461f79499ae32d710c841fa22934e3', '2025-10-14 13:21:05.604758', '2025-10-14 13:21:05.604758') RETURNING "key" /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
+Migrating to DeviseCreateUsers (20251014132012)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "reset_password_token" varchar, "reset_password_sent_at" datetime(6), "remember_created_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token") /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20251014132012') RETURNING "version" /*application='SniplyClone'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SniplyClone'*/[0m
+Migrating to AddPlanToUsers (20251014132019)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "plan" integer DEFAULT 0 NOT NULL /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20251014132019') RETURNING "version" /*application='SniplyClone'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
+Migrating to AddUserAndExpirationToLinks (20251014132114)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[35mPRAGMA foreign_keys /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "alinks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "original_url" varchar NOT NULL, "code" varchar NOT NULL, "cta_text" varchar, "cta_link" varchar, "cta_button_text" varchar, "cta_position" varchar, "cta_color" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_alinks_on_code" ON "alinks" ("code") /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "alinks" ("id","original_url","code","cta_text","cta_link","cta_button_text","cta_position","cta_color","created_at","updated_at")
+                     SELECT "id","original_url","code","cta_text","cta_link","cta_button_text","cta_position","cta_color","created_at","updated_at" FROM "links" /*application='SniplyClone'*/[0m
+  [1m[35m (0.7ms)[0m  [1m[35mDROP TABLE "links" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "links" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "original_url" varchar NOT NULL, "code" varchar NOT NULL, "cta_text" varchar, "cta_link" varchar, "cta_button_text" varchar, "cta_position" varchar, "cta_color" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_links_on_code" ON "links" ("code") /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "links" ("id","original_url","code","cta_text","cta_link","cta_button_text","cta_position","cta_color","created_at","updated_at")
+                     SELECT "id","original_url","code","cta_text","cta_link","cta_button_text","cta_position","cta_color","created_at","updated_at" FROM "alinks" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "alinks" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_links_on_user_id" ON "links" ("user_id") /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA foreign_keys /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='SniplyClone'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "alinks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "original_url" varchar NOT NULL, "code" varchar NOT NULL, "cta_text" varchar, "cta_link" varchar, "cta_button_text" varchar, "cta_position" varchar, "cta_color" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer NOT NULL) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_alinks_on_user_id" ON "alinks" ("user_id") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_alinks_on_code" ON "alinks" ("code") /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "alinks" ("id","original_url","code","cta_text","cta_link","cta_button_text","cta_position","cta_color","created_at","updated_at","user_id")
+                     SELECT "id","original_url","code","cta_text","cta_link","cta_button_text","cta_position","cta_color","created_at","updated_at","user_id" FROM "links" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "links" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "links" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "original_url" varchar NOT NULL, "code" varchar NOT NULL, "cta_text" varchar, "cta_link" varchar, "cta_button_text" varchar, "cta_position" varchar, "cta_color" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer NOT NULL, CONSTRAINT "fk_rails_005e9b2a6a"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_links_on_code" ON "links" ("code") /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_links_on_user_id" ON "links" ("user_id") /*application='SniplyClone'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "links" ("id","original_url","code","cta_text","cta_link","cta_button_text","cta_position","cta_color","created_at","updated_at","user_id")
+                     SELECT "id","original_url","code","cta_text","cta_link","cta_button_text","cta_position","cta_color","created_at","updated_at","user_id" FROM "alinks" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "alinks" /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='SniplyClone'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "links" ADD "expires_at" datetime(6) /*application='SniplyClone'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mALTER TABLE "links" ADD "click_count" integer DEFAULT 0 NOT NULL /*application='SniplyClone'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_links_on_expires_at" ON "links" ("expires_at") /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20251014132114') RETURNING "version" /*application='SniplyClone'*/[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
