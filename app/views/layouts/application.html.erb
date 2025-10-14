@@ -20,10 +20,22 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "links", "data-turbo-track": "reload" if controller_name == "links" %>
+    <%= stylesheet_link_tag "dashboard", "data-turbo-track": "reload" if controller_name == "dashboard" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <% if notice.present? || alert.present? %>
+      <div class="flash-messages">
+        <% if notice %>
+          <div class="flash-notice"><%= notice %></div>
+        <% end %>
+        <% if alert %>
+          <div class="flash-alert"><%= alert %></div>
+        <% end %>
+      </div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

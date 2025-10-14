@@ -1,13 +1,13 @@
-# Poplink
+# Vialink
 
-> CTA 오버레이를 추가할 수 있는 URL 단축 서비스
+> 버튼 오버레이를 추가할 수 있는 URL 단축 서비스
 
-Poplink는 링크를 공유할 때 커스텀 CTA(Call-to-Action)를 추가할 수 있는 서비스입니다. [Sniply](https://sniply.io/)의 핵심 기능만 구현한 MVP 프로젝트입니다.
+Vialink는 링크를 공유할 때 나만의 홍보 버튼을 추가할 수 있는 서비스입니다. [Sniply](https://sniply.io/)의 핵심 기능만 구현한 MVP 프로젝트입니다.
 
 ## 주요 기능
 
 - **URL 단축**: 원본 URL을 짧은 코드로 변환
-- **CTA 오버레이**: iframe 하단에 커스텀 CTA 추가
+- **버튼 오버레이**: iframe 하단에 커스텀 버튼 추가
 - **커스터마이징**: 텍스트, 링크, 위치, 색상 등 자유롭게 설정
 - **관리 대시보드**: Motor Admin을 통한 링크 관리
 
@@ -41,8 +41,8 @@ Poplink는 링크를 공유할 때 커스텀 CTA(Call-to-Action)를 추가할 �
 
 ```bash
 # 저장소 클론
-git clone https://github.com/benayou/poplink.git
-cd poplink
+git clone https://github.com/benayou/vialink.git
+cd vialink
 
 # 의존성 설치
 bundle install
@@ -59,14 +59,14 @@ bin/rails server
 ### 사용 방법
 
 1. 메인 페이지에서 원본 URL 입력
-2. CTA 정보 설정 (텍스트, 링크, 버튼, 색상 등)
+2. 버튼 정보 설정 (텍스트, 링크, 위치, 색상 등)
 3. 생성된 단축 URL 공유
-4. 방문자는 원본 콘텐츠와 함께 CTA 확인
+4. 방문자는 원본 콘텐츠와 함께 버튼 확인
 
 ## 프로젝트 구조
 
 ```
-poplink/
+vialink/
 ├── app/
 │   ├── controllers/
 │   │   └── links_controller.rb      # 링크 CRUD
@@ -144,6 +144,17 @@ flyctl logs
 - `RAILS_MASTER_KEY` - Rails credentials 암호화 키 (필수)
 - `DATABASE_URL` - SQLite 데이터베이스 경로 (기본: `sqlite3:///data/production.sqlite3`)
 
+### 비용 최적화
+
+현재 설정으로 **월 약 $0.25** 비용으로 운영 중:
+
+- **VM**: 256MB shared CPU (최소 사양)
+- **Auto-stop**: 트래픽 없을 때 자동 중지 (헬스체크 제거)
+- **Volume**: 1GB 데이터 저장소 ($0.15/월)
+- **첫 방문 시**: 2-5초 cold start (트레이드오프)
+
+비용 절감을 위해 헬스체크를 제거했으므로, 트래픽이 없으면 VM이 자동으로 중지됩니다.
+
 ## 제한사항
 
 ### X-Frame-Options 차단
@@ -204,12 +215,12 @@ RAILS_ENV=production rails server -p 3002
 - ✅ CTA 커스터마이징 (위치, 색상, 텍스트)
 - ✅ Fly.io 배포
 - ✅ Motor Admin 대시보드
-
-### 진행 중
-- 🔄 커스텀 도메인 연결
-- 🔄 Analytics (클릭 추적)
+- ✅ 비용 최적화 (월 $0.25)
+- ✅ 코드 정리 및 리팩토링
 
 ### 예정
+- ⏳ Analytics (클릭 추적, 통계)
+- ⏳ 커스텀 도메인 연결
 - ⏳ QR 코드 생성
 - ⏳ 사용자 인증 (Devise)
 - ⏳ 링크 유효기간 설정

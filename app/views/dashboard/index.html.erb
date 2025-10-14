@@ -1,0 +1,132 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1 class="page-title">내 대시보드</h1>
+    <div class="user-info">
+      <span class="user-email"><%= current_user.email %></span>
+      <span class="user-plan badge-<%= current_user.plan %>">
+        <%= current_user.plan == 'free' ? 'Free' : current_user.plan == 'pro' ? 'Pro' : 'Lifetime' %>
+      </span>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">이번 달 생성 링크</div>
+      <div class="stat-value"><%= @current_month_links_count %> / <%= @monthly_limit %></div>
+      <div class="stat-progress">
+        <div class="progress-bar" style="width: <%= (@current_month_links_count.to_f / @monthly_limit * 100).round %>%"></div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">남은 링크</div>
+      <div class="stat-value <%= @remaining_links <= 0 ? 'text-danger' : '' %>"><%= @remaining_links %>개</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">전체 링크</div>
+      <div class="stat-value"><%= @links.count %>개</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">총 클릭 수</div>
+      <div class="stat-value"><%= @links.sum(:click_count) %>회</div>
+    </div>
+  </div>
+
+  <div class="actions-bar">
+    <%= link_to '새 링크 만들기', new_link_path, class: 'btn-primary' %>
+    <%= link_to '로그아웃', destroy_user_session_path, method: :delete, class: 'btn-secondary' %>
+  </div>
+
+  <% if current_user.free? %>
+    <div class="upgrade-banner">
+      <h3>Pro 또는 Lifetime으로 업그레이드하세요!</h3>
+      <p>
+        버튼 색상 및 위치 커스터마이징, 더 많은 링크 생성, 더 긴 보관 기간을 이용하실 수 있습니다.
+      </p>
+      <ul>
+        <li><strong>Pro (₩2,900/월):</strong> 월 300개 링크, 30일 보관, 커스터마이징</li>
+        <li><strong>Lifetime (₩29,000):</strong> 월 500개 링크, 영구 보관, 커스터마이징</li>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="links-section">
+    <h2>내 링크 목록</h2>
+
+    <% if @links.empty? %>
+      <div class="empty-state">
+        <p>아직 생성된 링크가 없습니다.</p>
+        <%= link_to '첫 번째 링크 만들기', new_link_path, class: 'btn-primary' %>
+      </div>
+    <% else %>
+      <div class="links-table">
+        <table>
+          <thead>
+            <tr>
+              <th>코드</th>
+              <th>원본 URL</th>
+              <th>클릭 수</th>
+              <th>생성일</th>
+              <th>만료일</th>
+              <th>상태</th>
+              <th>동작</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @links.each do |link| %>
+              <tr class="<%= 'expired-row' if link.expired? %>">
+                <td>
+                  <code class="link-code"><%= link.code %></code>
+                </td>
+                <td class="url-cell">
+                  <a href="<%= link.original_url %>" target="_blank" rel="noopener" class="original-url">
+                    <%= truncate(link.original_url, length: 50) %>
+                  </a>
+                </td>
+                <td class="text-center"><%= link.click_count %></td>
+                <td><%= link.created_at.strftime('%Y-%m-%d %H:%M') %></td>
+                <td>
+                  <% if link.expires_at %>
+                    <%= link.expires_at.strftime('%Y-%m-%d') %>
+                  <% else %>
+                    <span class="text-success">영구</span>
+                  <% end %>
+                </td>
+                <td>
+                  <% if link.expired? %>
+                    <span class="badge-danger">만료됨</span>
+                  <% else %>
+                    <span class="badge-success">활성</span>
+                  <% end %>
+                </td>
+                <td>
+                  <% unless link.expired? %>
+                    <%= link_to '보기', link_path(link.code), class: 'btn-small', target: '_blank' %>
+                    <%= button_to '복사', '#', class: 'btn-small btn-copy',
+                        data: { url: link_url(link.code) },
+                        onclick: 'copyToClipboard(this.dataset.url); return false;' %>
+                  <% end %>
+                  <%= button_to '삭제', link_path(link), method: :delete,
+                      data: { confirm: '정말 삭제하시겠습니까?' },
+                      class: 'btn-small btn-danger' %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+function copyToClipboard(url) {
+  navigator.clipboard.writeText(url).then(function() {
+    alert('링크가 클립보드에 복사되었습니다!');
+  }, function(err) {
+    console.error('복사 실패:', err);
+  });
+}
+</script>

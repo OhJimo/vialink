@@ -25,6 +25,37 @@
   color: #dc2626;
 }
 
+.info-box {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  color: #1e40af;
+}
+
+.upgrade-hint {
+  font-size: 14px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.back-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.back-link a {
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.back-link a:hover {
+  color: #1f2937;
+  text-decoration: underline;
+}
+
 .form-group {
   margin-bottom: 20px;
 }
