@@ -561,3 +561,31 @@ Devise 회원가입
 Devise views 커스터마이징
 Dashboard 완성도 확인
 Fly.io 배포
+
+🚀 다음 단계 (선택 사항)
+
+1. Cron Job 설정 (Fly.io)
+   만료된 링크를 자동 삭제하려면 cron 작업 추가 필요:
+
+# fly.toml에 추가
+
+[[services]]
+internal_port = 3000
+
+[[services.processes]]
+processes = ["app"]
+
+# 추가 필요:
+
+[processes]
+app = "/rails/bin/docker-entrypoint ./bin/thrust ./bin/rails server"
+worker = "bundle exec rake links:cleanup_expired" 2. 결제 시스템 통합 (Phase 4)
+토스페이먼츠 또는 Stripe 연동
+플랜 업그레이드 UI
+결제 처리 로직 3. UI/UX 개선
+Devise 페이지 디자인 커스터마이징
+대시보드 추가 기능 (필터링, 정렬)
+반응형 디자인 개선 4. 분석 기능
+클릭 통계 그래프
+시간대별 분석
+유입 경로 추적

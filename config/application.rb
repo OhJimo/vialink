@@ -23,5 +23,13 @@ module SniplyClone
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Set Korean as default locale
+    config.i18n.default_locale = :ko
+    config.i18n.available_locales = [:ko, :en]
+
+    # Set timezone to Seoul
+    config.time_zone = "Seoul"
+    config.active_record.default_timezone = :local
   end
 end
