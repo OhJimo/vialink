@@ -2,7 +2,7 @@ class Link < ApplicationRecord
   include CodeGenerator
   include DefaultAttributes
 
-  belongs_to :user
+  belongs_to :user, optional: true  # 게스트 사용자도 가능하도록
 
   validates :original_url, :code, presence: true
   validates :code, uniqueness: true
@@ -27,7 +27,13 @@ class Link < ApplicationRecord
   private
 
   def set_expires_at
-    days = user.link_expiry_days
-    self.expires_at = days ? days.days.from_now : nil
+    # 게스트 사용자는 1일, 로그인 사용자는 플랜에 따라
+    if user.present?
+      days = user.link_expiry_days
+      self.expires_at = days ? days.days.from_now : nil
+    else
+      # 게스트는 1일만 보관
+      self.expires_at = 1.day.from_now
+    end
   end
 end

@@ -1,24 +1,88 @@
-<div class="link-form-container">
-  <h1 class="page-title">Vialink - 링크 만들기</h1>
+<%= render 'shared/header' %>
 
-  <% if user_signed_in? %>
-    <div class="info-box">
-      <strong>이번 달 남은 링크:</strong>
-      <%= current_user.monthly_link_limit - current_user.current_month_links_count %>개 /
-      <%= current_user.monthly_link_limit %>개
-      <% if current_user.free? %>
-        <span class="upgrade-hint">
-          (Pro 또는 Lifetime으로 업그레이드하여 더 많은 링크를 만드세요!)
-        </span>
-      <% end %>
+<div class="main-container">
+  <div class="hero-section">
+    <h1 class="hero-title">링크에 가치를 더하세요</h1>
+    <p class="hero-subtitle">
+      단축 링크에 당신만의 CTA를 추가하여 클릭률을 높이고 전환을 극대화하세요
+    </p>
+  </div>
+
+  <% if flash[:notice] && flash[:link_code] %>
+    <div class="success-box">
+      <h3>✅ 링크가 생성되었습니다!</h3>
+      <div class="generated-link">
+        <input type="text" readonly value="<%= request.base_url %>/<%= flash[:link_code] %>" id="generated-link-input" class="link-input-display">
+        <button onclick="copyLink()" class="btn-copy-link">복사</button>
+      </div>
+      <%= link_to "링크 미리보기 →", short_link_path(flash[:link_code]), class: 'btn-preview', target: '_blank' %>
     </div>
   <% end %>
 
-  <%= render 'form' %>
-
-  <% if user_signed_in? %>
-    <div class="back-link">
-      <%= link_to '← 대시보드로 돌아가기', dashboard_path %>
+  <% if flash[:alert] %>
+    <div class="alert-box">
+      <p><%= flash[:alert] %></p>
     </div>
   <% end %>
+
+  <div class="form-section">
+    <% if user_signed_in? %>
+      <div class="user-info-box">
+        <p>
+          <strong>이번 달 남은 링크:</strong>
+          <%= current_user.monthly_link_limit - current_user.current_month_links_count %>개 /
+          <%= current_user.monthly_link_limit %>개
+        </p>
+      </div>
+    <% else %>
+      <div class="guest-info-box">
+        <p>
+          🎁 <strong>무료 체험:</strong> 로그인 없이 3개까지 링크를 만들 수 있어요!
+          <% guest_count = session[:guest_link_count] || 0 %>
+          (남은 횟수: <%= 3 - guest_count %>개)
+        </p>
+      </div>
+    <% end %>
+
+    <%= render 'form' %>
+  </div>
+
+  <div class="features-section">
+    <h2 class="features-title">Vialink의 특별한 기능</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>맞춤형 CTA</h3>
+        <p>링크에 나만의 행동 유도 메시지를 추가하세요</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>클릭 추적</h3>
+        <p>실시간으로 링크 성과를 모니터링하세요</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>빠른 생성</h3>
+        <p>몇 초 만에 강력한 링크를 만드세요</p>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script>
+function copyLink() {
+  const input = document.getElementById('generated-link-input');
+  input.select();
+  document.execCommand('copy');
+
+  const btn = event.target;
+  const originalText = btn.textContent;
+  btn.textContent = '복사됨!';
+  btn.classList.add('copied');
+
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.classList.remove('copied');
+  }, 2000);
+}
+</script>

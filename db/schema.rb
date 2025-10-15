@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_14_132114) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_15_014812) do
   create_table "links", force: :cascade do |t|
     t.string "original_url", null: false
     t.string "code", null: false
@@ -21,7 +21,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_132114) do
     t.string "cta_color"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.datetime "expires_at"
     t.integer "click_count", default: 0, null: false
     t.index ["code"], name: "index_links_on_code", unique: true
