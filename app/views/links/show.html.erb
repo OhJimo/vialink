@@ -4,28 +4,119 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Vialink</title>
-  <%= stylesheet_link_tag "links" %>
   <style>
-    /* Critical CSS to prevent layout shift */
+    /* Modern CTA Overlay Styles - 2025 Design */
+    * { box-sizing: border-box; }
+
     html.proxy-page, body.proxy-page {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
+
     .proxy-page #content-frame {
       width: 100%;
-      height: calc(100% - 80px);
+      height: calc(100% - 100px);
       border: none;
       display: block;
     }
+
     .proxy-page #cta-overlay {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      height: 80px;
+      height: auto;
+      min-height: 100px;
+      padding: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.98) 100%);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
       z-index: 9999;
+      border-top: 2px solid #e5e7eb;
+    }
+
+    .cta-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .cta-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1f2937;
+      flex: 0 1 auto;
+      text-align: center;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 16px 32px;
+      font-size: 16px;
+      font-weight: 700;
+      color: white;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      text-decoration: none;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      white-space: nowrap;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+    }
+
+    .cta-button:active {
+      transform: translateY(-1px);
+    }
+
+    #iframe-error {
+      display: none;
+      padding: 40px;
+      text-align: center;
+      background: #fef2f2;
+      border: 2px solid #fecaca;
+      border-radius: 16px;
+      margin: 40px;
+    }
+
+    #iframe-error h2 {
+      color: #991b1b;
+      margin-top: 0;
+    }
+
+    #iframe-error a {
+      color: #667eea;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .proxy-page #content-frame {
+        height: calc(100% - 140px);
+      }
+
+      .cta-content {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .cta-text {
+        font-size: 16px;
+      }
+
+      .cta-button {
+        width: 100%;
+        padding: 14px 24px;
+      }
     }
   </style>
 </head>
@@ -38,7 +129,7 @@
     <p><a href="<%= @link.original_url %>" target="_blank">여기를 클릭하여 원본 페이지를 방문하세요</a></p>
   </div>
 
-  <div id="cta-overlay" style="<%= cta_overlay_style(@link) %>">
+  <div id="cta-overlay">
     <div class="cta-content">
       <% if @link.cta_text.present? %>
         <span class="cta-text"><%= @link.cta_text %></span>

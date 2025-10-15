@@ -705,3 +705,162 @@ Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-
   
 ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
   
+Started GET "/" for ::1 at 2025-10-15 11:36:18 +0900
+  [1m[36mActiveRecord::SchemaMigration Load (1.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
+Processing by LinksController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering links/new.html.erb within layouts/application
+  Rendered shared/_header.html.erb (Duration: 2.8ms | GC: 0.0ms)
+  Rendered links/_form.html.erb (Duration: 9.3ms | GC: 0.0ms)
+  Rendered links/new.html.erb within layouts/application (Duration: 14.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 19.6ms | GC: 0.0ms)
+Completed 200 OK in 96ms (Views: 29.8ms | ActiveRecord: 1.5ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/links" for ::1 at 2025-10-15 11:36:36 +0900
+Processing by LinksController#create as TURBO_STREAM
+  Parameters: {"authenticity_token" => "[FILTERED]", "link" => {"original_url" => "https://blog.naver.com/sakedo/224007273499", "cta_text" => "확인해보세요!", "cta_link" => "https://www.google.com/", "cta_button_text" => "자세히 보기", "cta_position" => "center", "cta_color" => "#2563eb"}, "commit" => "링크 생성"}
+  [1m[36mTRANSACTION (5.3ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:16:in 'LinksController#create'
+  [1m[36mLink Exists? (12.5ms)[0m  [1m[34mSELECT 1 AS one FROM "links" WHERE "links"."code" = 'Cccc1P' LIMIT 1 /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:16:in 'LinksController#create'
+  [1m[36mLink Create (0.2ms)[0m  [1m[32mINSERT INTO "links" ("original_url", "code", "cta_text", "cta_link", "cta_button_text", "cta_position", "cta_color", "created_at", "updated_at", "user_id", "expires_at", "click_count") VALUES ('https://blog.naver.com/sakedo/224007273499', 'Cccc1P', '확인해보세요!', 'https://www.google.com/', '자세히 보기', 'center', '#2563eb', '2025-10-15 11:36:36.801906', '2025-10-15 11:36:36.801906', NULL, '2025-10-16 11:36:36.807157', 0) RETURNING "id" /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:16:in 'LinksController#create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:16:in 'LinksController#create'
+Redirected to http://localhost:3000/
+Completed 302 Found in 97ms (ActiveRecord: 18.4ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for ::1 at 2025-10-15 11:36:36 +0900
+Processing by LinksController#new as TURBO_STREAM
+  Rendering layout layouts/application.html.erb
+  Rendering links/new.html.erb within layouts/application
+  Rendered shared/_header.html.erb (Duration: 1.4ms | GC: 0.0ms)
+  Rendered links/_form.html.erb (Duration: 1.8ms | GC: 0.0ms)
+  Rendered links/new.html.erb within layouts/application (Duration: 4.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 6.9ms | GC: 0.0ms)
+Completed 200 OK in 30ms (Views: 7.5ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/Cccc1P" for ::1 at 2025-10-15 11:36:38 +0900
+Processing by LinksController#show as HTML
+  Parameters: {"code" => "Cccc1P"}
+  [1m[36mLink Load (1.4ms)[0m  [1m[34mSELECT "links".* FROM "links" WHERE "links"."code" = 'Cccc1P' LIMIT 1 /*action='show',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:29:in 'LinksController#show'
+  [1m[36mLink Update All (1.3ms)[0m  [1m[33mUPDATE "links" SET "click_count" = COALESCE("click_count", 0) + 1 WHERE "links"."id" = 3 /*action='show',application='SniplyClone',controller='links'*/[0m
+  ↳ app/models/link.rb:24:in 'Link#increment_clicks!'
+  Rendering links/show.html.erb
+  Rendered links/show.html.erb (Duration: 9.3ms | GC: 1.7ms)
+Completed 200 OK in 67ms (Views: 11.0ms | ActiveRecord: 2.6ms (2 queries, 0 cached) | GC: 1.7ms)
+
+
+Started GET "/favicon.ico" for ::1 at 2025-10-15 11:36:41 +0900
+Processing by LinksController#show as */*
+  Parameters: {"code" => "favicon"}
+  [1m[36mLink Load (0.7ms)[0m  [1m[34mSELECT "links".* FROM "links" WHERE "links"."code" = 'favicon' LIMIT 1 /*action='show',application='SniplyClone',controller='links'*/[0m
+  ↳ app/controllers/links_controller.rb:29:in 'LinksController#show'
+Completed 404 Not Found in 45ms (ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 1.0ms)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Link with [WHERE "links"."code" = ?]):
+  
+app/controllers/links_controller.rb:29:in 'LinksController#show'
+Started GET "/" for ::1 at 2025-10-15 11:40:57 +0900
+Processing by LinksController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering links/new.html.erb within layouts/application
+  Rendered shared/_header.html.erb (Duration: 3.1ms | GC: 0.0ms)
+  Rendered links/_form.html.erb (Duration: 9.8ms | GC: 0.0ms)
+  Rendered links/new.html.erb within layouts/application (Duration: 14.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 15.5ms | GC: 0.0ms)
+Completed 200 OK in 47ms (Views: 18.2ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for ::1 at 2025-10-15 14:07:49 +0900
+Processing by LinksController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering links/new.html.erb within layouts/application
+  Rendered shared/_header.html.erb (Duration: 3.4ms | GC: 0.0ms)
+  Rendered links/_form.html.erb (Duration: 4.6ms | GC: 0.0ms)
+  Rendered links/new.html.erb within layouts/application (Duration: 12.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 17.5ms | GC: 0.0ms)
+Completed 200 OK in 58ms (Views: 19.7ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.7ms)
+
+
+Started POST "/links" for ::1 at 2025-10-15 14:08:15 +0900
+Processing by LinksController#create as TURBO_STREAM
+  Parameters: {"authenticity_token" => "[FILTERED]", "link" => {"original_url" => "https://v.daum.net/v/20251013114615720", "cta_text" => "확인해보세요!", "cta_link" => "https://www.naver.com/", "cta_button_text" => "자세히 보기", "cta_position" => "center", "cta_color" => "#2563eb"}, "commit" => "링크 생성"}
+Redirected to http://localhost:3000/users/sign_up
+Filter chain halted as :check_link_limit rendered or redirected
+Completed 302 Found in 49ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/users/sign_up" for ::1 at 2025-10-15 14:08:15 +0900
+Processing by Devise::RegistrationsController#new as TURBO_STREAM
+  Rendering layout layouts/application.html.erb
+  Rendering devise/registrations/new.html.erb within layouts/application
+  Rendered devise/shared/_error_messages.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered devise/shared/_links.html.erb (Duration: 1.4ms | GC: 0.0ms)
+  Rendered devise/registrations/new.html.erb within layouts/application (Duration: 13.1ms | GC: 0.3ms)
+  Rendered layout layouts/application.html.erb (Duration: 18.7ms | GC: 0.3ms)
+Completed 500 Internal Server Error in 64ms (ActiveRecord: 7.2ms (0 queries, 0 cached) | GC: 0.6ms)
+
+
+  
+ActionView::Template::Error (The asset 'devise.css' was not found in the load path.)
+Caused by: Propshaft::MissingAssetError (The asset 'devise.css' was not found in the load path.)
+
+Information for: ActionView::Template::Error (The asset 'devise.css' was not found in the load path.):
+    20:     <%# Includes all stylesheet files in app/assets/stylesheets %>
+    21:     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    22:     <%= stylesheet_link_tag "dashboard", "data-turbo-track": "reload" if controller_name == "dashboard" %>
+    23:     <%= stylesheet_link_tag "devise", "data-turbo-track": "reload" if controller_name == "sessions" || controller_name == "registrations" || controller_name == "passwords" %>
+    24: 
+    25:     <style>
+    26:       /* Main Page Styles - Inline for immediate load */
+  
+app/views/layouts/application.html.erb:23
+
+Information for cause: Propshaft::MissingAssetError (The asset 'devise.css' was not found in the load path.):
+  
+app/views/layouts/application.html.erb:23
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-10-15 14:08:35 +0900
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/" for ::1 at 2025-10-15 14:09:18 +0900
+Processing by LinksController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering links/new.html.erb within layouts/application
+  Rendered shared/_header.html.erb (Duration: 2.3ms | GC: 0.0ms)
+  Rendered links/_form.html.erb (Duration: 8.1ms | GC: 1.3ms)
+  Rendered links/new.html.erb within layouts/application (Duration: 11.6ms | GC: 1.3ms)
+  Rendered layout layouts/application.html.erb (Duration: 15.5ms | GC: 1.3ms)
+Completed 200 OK in 73ms (Views: 17.2ms | ActiveRecord: 8.0ms (0 queries, 0 cached) | GC: 6.5ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-10-15 14:09:18 +0900
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started POST "/links" for ::1 at 2025-10-15 14:09:28 +0900
+Processing by LinksController#create as TURBO_STREAM
+  Parameters: {"authenticity_token" => "[FILTERED]", "link" => {"original_url" => "https://v.daum.net/v/20251003173112430", "cta_text" => "확인해보세요!", "cta_link" => "https://www.google.com/", "cta_button_text" => "자세히 보기", "cta_position" => "center", "cta_color" => "#2563eb"}, "commit" => "링크 생성"}
+Redirected to http://localhost:3000/users/sign_up
+Filter chain halted as :check_link_limit rendered or redirected
+Completed 302 Found in 35ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/users/sign_up" for ::1 at 2025-10-15 14:09:28 +0900
+Processing by Devise::RegistrationsController#new as TURBO_STREAM
+  Rendering layout layouts/application.html.erb
+  Rendering devise/registrations/new.html.erb within layouts/application
+  Rendered devise/shared/_error_messages.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered devise/shared/_links.html.erb (Duration: 0.6ms | GC: 0.0ms)
+  Rendered devise/registrations/new.html.erb within layouts/application (Duration: 5.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 7.5ms | GC: 0.0ms)
+Completed 200 OK in 51ms (Views: 10.7ms | ActiveRecord: 3.9ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
