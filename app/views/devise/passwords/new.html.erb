@@ -1,0 +1,28 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h1 class="auth-title">Vialink</h1>
+      <p class="auth-subtitle">링크에 가치를 더하다</p>
+    </div>
+
+    <h2 class="form-title">비밀번호 찾기</h2>
+    <p class="form-description">가입하신 이메일 주소를 입력하시면 비밀번호 재설정 링크를 보내드립니다.</p>
+
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'auth-form' }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div class="form-group">
+        <%= f.label :email, '이메일' %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-input', placeholder: 'your@email.com' %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "비밀번호 재설정 이메일 보내기", class: 'btn-submit' %>
+      </div>
+    <% end %>
+
+    <div class="auth-links">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

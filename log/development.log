@@ -267,3 +267,20 @@ FOREIGN KEY ("user_id")
   [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
   [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
   [1m[36mActiveRecord::SchemaMigration Load (2.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
+Started HEAD "/" for ::1 at 2025-10-15 10:25:58 +0900
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
+Processing by LinksController#new as */*
+Completed 401 Unauthorized in 51ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 9.9ms)
+
+
+Started HEAD "/users/sign_in" for ::1 at 2025-10-15 10:33:14 +0900
+  [1m[36mActiveRecord::SchemaMigration Load (1.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SniplyClone'*/[0m
+Processing by Devise::SessionsController#new as */*
+  Rendering layout layouts/application.html.erb
+  Rendering devise/sessions/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (Duration: 6.6ms | GC: 0.0ms)
+  Rendered devise/sessions/new.html.erb within layouts/application (Duration: 25.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 32.2ms | GC: 0.0ms)
+Completed 200 OK in 91ms (Views: 45.8ms | ActiveRecord: 1.6ms (0 queries, 0 cached) | GC: 0.0ms)
+
+

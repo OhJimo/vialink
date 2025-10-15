@@ -1,0 +1,37 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h1 class="auth-title">Vialink</h1>
+      <p class="auth-subtitle">링크에 가치를 더하다</p>
+    </div>
+
+    <h2 class="form-title">로그인</h2>
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'auth-form' }) do |f| %>
+      <div class="form-group">
+        <%= f.label :email, '이메일' %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-input', placeholder: 'your@email.com' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password, '비밀번호' %>
+        <%= f.password_field :password, autocomplete: "current-password", class: 'form-input', placeholder: '비밀번호를 입력하세요' %>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="form-group-checkbox">
+          <%= f.check_box :remember_me, class: 'form-checkbox' %>
+          <%= f.label :remember_me, '로그인 상태 유지' %>
+        </div>
+      <% end %>
+
+      <div class="form-actions">
+        <%= f.submit "로그인", class: 'btn-submit' %>
+      </div>
+    <% end %>
+
+    <div class="auth-links">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

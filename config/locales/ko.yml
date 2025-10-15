@@ -1,0 +1,51 @@
+ko:
+  activerecord:
+    models:
+      user: "사용자"
+      link: "링크"
+    attributes:
+      user:
+        email: "이메일"
+        password: "비밀번호"
+        password_confirmation: "비밀번호 확인"
+        remember_me: "로그인 상태 유지"
+        plan: "플랜"
+      link:
+        original_url: "원본 URL"
+        code: "코드"
+        cta_text: "CTA 텍스트"
+        cta_link: "CTA 링크"
+        cta_button_text: "버튼 텍스트"
+        cta_position: "버튼 위치"
+        cta_color: "버튼 색상"
+        expires_at: "만료일"
+        click_count: "클릭 수"
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: "이메일을 입력해주세요"
+              invalid: "올바른 이메일 형식이 아닙니다"
+              taken: "이미 사용 중인 이메일입니다"
+            password:
+              blank: "비밀번호를 입력해주세요"
+              too_short: "비밀번호는 최소 %{count}자 이상이어야 합니다"
+            password_confirmation:
+              confirmation: "비밀번호가 일치하지 않습니다"
+        link:
+          attributes:
+            original_url:
+              blank: "URL을 입력해주세요"
+              invalid: "올바른 URL 형식이 아닙니다"
+            code:
+              blank: "코드를 입력해주세요"
+              taken: "이미 사용 중인 코드입니다"
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      blank: "을(를) 입력해주세요"
+      taken: "이(가) 이미 사용 중입니다"
+      too_short: "은(는) 최소 %{count}자 이상이어야 합니다"
+      invalid: "이(가) 올바르지 않습니다"
+      confirmation: "이(가) 일치하지 않습니다"
