@@ -1,0 +1,176 @@
+# Motor Admin 통계 쿼리들
+
+# 1. 전체 가입자 통계
+total_users:
+  name: "전체 가입자 통계"
+  description: "플랜별 가입자 수"
+  sql: |
+    SELECT
+      plan AS "플랜",
+      COUNT(*) AS "가입자 수",
+      ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM users), 2) AS "비율 (%)"
+    FROM users
+    GROUP BY plan
+    ORDER BY
+      CASE plan
+        WHEN 'lifetime' THEN 1
+        WHEN 'pro' THEN 2
+        WHEN 'free' THEN 3
+      END
+
+# 2. 일별 신규 가입자
+daily_signups:
+  name: "일별 신규 가입자"
+  description: "최근 30일 가입자 추이"
+  sql: |
+    SELECT
+      DATE(created_at) AS "날짜",
+      COUNT(*) AS "신규 가입자",
+      plan AS "플랜"
+    FROM users
+    WHERE created_at >= DATE('now', '-30 days')
+    GROUP BY DATE(created_at), plan
+    ORDER BY DATE(created_at) DESC
+
+# 3. 링크 생성 통계
+link_stats:
+  name: "링크 생성 통계"
+  description: "총 링크 수와 클릭 통계"
+  sql: |
+    SELECT
+      COUNT(*) AS "총 링크 수",
+      SUM(click_count) AS "총 클릭 수",
+      ROUND(AVG(click_count), 2) AS "평균 클릭 수",
+      MAX(click_count) AS "최대 클릭 수"
+    FROM links
+    WHERE expires_at IS NULL OR expires_at > datetime('now')
+
+# 4. 플랜별 링크 생성 현황
+links_by_plan:
+  name: "플랜별 링크 생성 현황"
+  description: "각 플랜별 생성된 링크 수"
+  sql: |
+    SELECT
+      COALESCE(u.plan, 'guest') AS "플랜",
+      COUNT(l.id) AS "링크 수",
+      SUM(l.click_count) AS "총 클릭 수",
+      ROUND(AVG(l.click_count), 2) AS "평균 클릭 수"
+    FROM links l
+    LEFT JOIN users u ON l.user_id = u.id
+    GROUP BY u.plan
+    ORDER BY COUNT(l.id) DESC
+
+# 5. 인기 링크 TOP 10
+top_links:
+  name: "인기 링크 TOP 10"
+  description: "클릭 수 기준 상위 10개 링크"
+  sql: |
+    SELECT
+      l.code AS "코드",
+      l.original_url AS "원본 URL",
+      l.click_count AS "클릭 수",
+      l.cta_message AS "CTA 메시지",
+      COALESCE(u.email, '게스트') AS "생성자"
+    FROM links l
+    LEFT JOIN users u ON l.user_id = u.id
+    WHERE l.expires_at IS NULL OR l.expires_at > datetime('now')
+    ORDER BY l.click_count DESC
+    LIMIT 10
+
+# 6. 월별 신규 가입자 추이
+monthly_signups:
+  name: "월별 신규 가입자"
+  description: "최근 12개월 가입자 추이"
+  sql: |
+    SELECT
+      strftime('%Y-%m', created_at) AS "년-월",
+      COUNT(*) AS "신규 가입자",
+      plan AS "플랜"
+    FROM users
+    WHERE created_at >= DATE('now', '-12 months')
+    GROUP BY strftime('%Y-%m', created_at), plan
+    ORDER BY strftime('%Y-%m', created_at) DESC
+
+# 7. 활성 사용자 분석
+active_users:
+  name: "활성 사용자 분석"
+  description: "최근 30일 내 링크 생성한 사용자"
+  sql: |
+    SELECT
+      u.plan AS "플랜",
+      COUNT(DISTINCT u.id) AS "활성 사용자 수",
+      COUNT(l.id) AS "생성한 링크 수",
+      ROUND(COUNT(l.id) * 1.0 / COUNT(DISTINCT u.id), 2) AS "사용자당 평균 링크"
+    FROM users u
+    LEFT JOIN links l ON u.id = l.user_id AND l.created_at >= DATE('now', '-30 days')
+    GROUP BY u.plan
+
+# 8. 수익 예측 (MRR)
+revenue_forecast:
+  name: "월간 반복 수익 (MRR)"
+  description: "플랜별 예상 월 수익"
+  sql: |
+    SELECT
+      plan AS "플랜",
+      COUNT(*) AS "가입자 수",
+      CASE
+        WHEN plan = 'pro' THEN COUNT(*) * 2900
+        WHEN plan = 'lifetime' THEN 0
+        ELSE 0
+      END AS "월 예상 수익 (원)",
+      CASE
+        WHEN plan = 'lifetime' THEN COUNT(*) * 29000
+        ELSE 0
+      END AS "일회성 수익 (원)"
+    FROM users
+    GROUP BY plan
+
+# 9. 전환율 분석
+conversion_rate:
+  name: "플랜 전환율"
+  description: "Free에서 유료 플랜으로 전환율"
+  sql: |
+    SELECT
+      'Free 사용자' AS "구분",
+      COUNT(*) AS "수",
+      ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM users), 2) AS "비율 (%)"
+    FROM users WHERE plan = 'free'
+    UNION ALL
+    SELECT
+      'Pro 사용자' AS "구분",
+      COUNT(*) AS "수",
+      ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM users), 2) AS "비율 (%)"
+    FROM users WHERE plan = 'pro'
+    UNION ALL
+    SELECT
+      'Lifetime 사용자' AS "구분",
+      COUNT(*) AS "수",
+      ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM users), 2) AS "비율 (%)"
+    FROM users WHERE plan = 'lifetime'
+    UNION ALL
+    SELECT
+      '유료 전환율' AS "구분",
+      COUNT(*) AS "수",
+      ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM users WHERE plan = 'free'), 2) AS "비율 (%)"
+    FROM users WHERE plan IN ('pro', 'lifetime')
+
+# 10. 링크 만료 현황
+link_expiration:
+  name: "링크 만료 현황"
+  description: "활성/만료된 링크 통계"
+  sql: |
+    SELECT
+      CASE
+        WHEN expires_at IS NULL THEN '영구'
+        WHEN expires_at > datetime('now') THEN '활성'
+        ELSE '만료'
+      END AS "상태",
+      COUNT(*) AS "링크 수",
+      SUM(click_count) AS "총 클릭 수"
+    FROM links
+    GROUP BY
+      CASE
+        WHEN expires_at IS NULL THEN '영구'
+        WHEN expires_at > datetime('now') THEN '활성'
+        ELSE '만료'
+      END

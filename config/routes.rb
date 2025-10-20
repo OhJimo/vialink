@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "analytics/index"
   devise_for :users
   mount Motor::Admin => "/motor_admin"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -19,6 +20,9 @@ Rails.application.routes.draw do
 
   # Dashboard
   get "dashboard", to: "dashboard#index"
+
+  # Analytics
+  get "analytics", to: "analytics#index"
 
   # Links
   resources :links, only: [ :new, :create, :show, :destroy ]
