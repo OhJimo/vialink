@@ -1,10 +1,12 @@
+<%= render 'shared/header' %>
+
 <div class="dashboard-container">
   <div class="dashboard-header">
     <h1 class="page-title">내 대시보드</h1>
     <div class="user-info">
       <span class="user-email"><%= current_user.email %></span>
       <span class="user-plan badge-<%= current_user.plan %>">
-        <%= current_user.plan == 'free' ? 'Free' : current_user.plan == 'pro' ? 'Pro' : 'Lifetime' %>
+        <%= current_user.plan == 'free' ? 'FREE' : current_user.plan == 'pro' ? 'PRO' : 'LIFETIME' %>
       </span>
     </div>
   </div>
@@ -34,38 +36,37 @@
     </div>
   </div>
 
-  <div class="actions-bar">
-    <%= link_to '새 링크 만들기', new_link_path, class: 'btn-primary' %>
-    <%= link_to '로그아웃', destroy_user_session_path, method: :delete, class: 'btn-secondary' %>
-  </div>
-
-  <% if current_user.free? %>
-    <div class="upgrade-banner">
-      <h3>Pro 또는 Lifetime으로 업그레이드하세요!</h3>
-      <p>
-        버튼 색상 및 위치 커스터마이징, 더 많은 링크 생성, 더 긴 보관 기간을 이용하실 수 있습니다.
-      </p>
-      <ul>
-        <li><strong>Pro (₩2,900/월):</strong> 월 300개 링크, 30일 보관, 커스터마이징</li>
-        <li><strong>Lifetime (₩29,000):</strong> 월 500개 링크, 영구 보관, 커스터마이징</li>
-      </ul>
-    </div>
-  <% end %>
-
   <div class="links-section">
-    <h2>내 링크 목록</h2>
+    <div class="links-section-header">
+      <h2>내 링크 목록</h2>
+      <div class="links-header-right">
+        <% unless @links.empty? %>
+          <select id="sort-select" class="sort-select">
+            <option value="created_at-desc">생성일 (최신순)</option>
+            <option value="created_at-asc">생성일 (오래된순)</option>
+            <option value="click_count-desc">클릭 수 (높은순)</option>
+            <option value="click_count-asc">클릭 수 (낮은순)</option>
+            <option value="expires_at-asc">만료일 (가까운순)</option>
+            <option value="expires_at-desc">만료일 (먼순)</option>
+          </select>
+        <% end %>
+        <%= link_to new_link_path, class: 'btn-header' do %>
+          <span class="btn-icon">+</span>
+          <span>새 링크 만들기</span>
+        <% end %>
+      </div>
+    </div>
 
     <% if @links.empty? %>
       <div class="empty-state">
         <p>아직 생성된 링크가 없습니다.</p>
-        <%= link_to '첫 번째 링크 만들기', new_link_path, class: 'btn-primary' %>
       </div>
     <% else %>
-      <div class="links-table">
+      <div class="links-table" id="links-table">
         <table>
           <thead>
             <tr>
-              <th>코드</th>
+              <th>짧은 링크</th>
               <th>원본 URL</th>
               <th>클릭 수</th>
               <th>생성일</th>
@@ -77,8 +78,21 @@
           <tbody>
             <% @links.each do |link| %>
               <tr class="<%= 'expired-row' if link.expired? %>">
-                <td>
-                  <code class="link-code"><%= link.code %></code>
+                <td class="short-link-cell">
+                  <div class="short-link-container">
+                    <a href="<%= link_url(link.code) %>" target="_blank" rel="noopener" class="short-link">
+                      <%= link_url(link.code) %>
+                    </a>
+                    <button class="btn-icon-copy"
+                            data-url="<%= link_url(link.code) %>"
+                            onclick="copyToClipboard(this.dataset.url); return false;"
+                            title="링크 복사">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                    </button>
+                  </div>
                 </td>
                 <td class="url-cell">
                   <a href="<%= link.original_url %>" target="_blank" rel="noopener" class="original-url">
@@ -102,12 +116,6 @@
                   <% end %>
                 </td>
                 <td>
-                  <% unless link.expired? %>
-                    <%= link_to '보기', link_path(link.code), class: 'btn-small', target: '_blank' %>
-                    <%= button_to '복사', '#', class: 'btn-small btn-copy',
-                        data: { url: link_url(link.code) },
-                        onclick: 'copyToClipboard(this.dataset.url); return false;' %>
-                  <% end %>
                   <%= button_to '삭제', link_path(link), method: :delete,
                       data: { confirm: '정말 삭제하시겠습니까?' },
                       class: 'btn-small btn-danger' %>
@@ -128,5 +136,54 @@ function copyToClipboard(url) {
   }, function(err) {
     console.error('복사 실패:', err);
   });
+}
+
+// 정렬 기능
+document.addEventListener('DOMContentLoaded', function() {
+  const sortSelect = document.getElementById('sort-select');
+  if (!sortSelect) return;
+
+  sortSelect.addEventListener('change', function() {
+    const [field, order] = this.value.split('-');
+    sortTable(field, order);
+  });
+});
+
+function sortTable(field, order) {
+  const table = document.querySelector('#links-table table tbody');
+  const rows = Array.from(table.querySelectorAll('tr'));
+
+  rows.sort((a, b) => {
+    let aValue, bValue;
+
+    switch(field) {
+      case 'click_count':
+        aValue = parseInt(a.cells[2].textContent.trim());
+        bValue = parseInt(b.cells[2].textContent.trim());
+        break;
+      case 'created_at':
+        aValue = new Date(a.cells[3].textContent.trim());
+        bValue = new Date(b.cells[3].textContent.trim());
+        break;
+      case 'expires_at':
+        const aText = a.cells[4].textContent.trim();
+        const bText = b.cells[4].textContent.trim();
+        // "영구"는 가장 나중으로
+        if (aText === '영구') aValue = new Date('2099-12-31');
+        else aValue = new Date(aText);
+        if (bText === '영구') bValue = new Date('2099-12-31');
+        else bValue = new Date(bText);
+        break;
+    }
+
+    if (order === 'asc') {
+      return aValue > bValue ? 1 : -1;
+    } else {
+      return aValue < bValue ? 1 : -1;
+    }
+  });
+
+  // 테이블 다시 그리기
+  rows.forEach(row => table.appendChild(row));
 }
 </script>

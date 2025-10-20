@@ -1,0 +1,158 @@
+<%= render 'shared/header' %>
+
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1 class="page-title">📊 통계 대시보드</h1>
+  </div>
+
+  <!-- 핵심 지표 -->
+  <h2 style="margin-bottom: 20px; color: #1f2937;">핵심 지표</h2>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">총 가입자</div>
+      <div class="stat-value"><%= @total_users %>명</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">총 링크</div>
+      <div class="stat-value"><%= @total_links %>개</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">총 클릭 수</div>
+      <div class="stat-value"><%= number_with_delimiter(@total_clicks) %>회</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">평균 클릭 수</div>
+      <div class="stat-value"><%= @average_clicks %>회</div>
+    </div>
+  </div>
+
+  <!-- 가입자 통계 -->
+  <h2 style="margin: 40px 0 20px 0; color: #1f2937;">가입자 통계</h2>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Free 플랜</div>
+      <div class="stat-value"><%= @free_users %>명</div>
+      <span class="badge-free" style="margin-top: 10px; display: inline-block;">Free</span>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Pro 플랜</div>
+      <div class="stat-value"><%= @pro_users %>명</div>
+      <span class="badge-pro" style="margin-top: 10px; display: inline-block;">Pro</span>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Lifetime 플랜</div>
+      <div class="stat-value"><%= @lifetime_users %>명</div>
+      <span class="badge-lifetime" style="margin-top: 10px; display: inline-block;">Lifetime</span>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">최근 30일 신규 가입</div>
+      <div class="stat-value"><%= @recent_signups %>명</div>
+    </div>
+  </div>
+
+  <!-- 수익 통계 -->
+  <h2 style="margin: 40px 0 20px 0; color: #1f2937;">💰 수익 통계</h2>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">월간 반복 수익 (MRR)</div>
+      <div class="stat-value" style="color: #16a34a;">₩<%= number_with_delimiter(@mrr) %></div>
+      <p style="font-size: 14px; color: #6b7280; margin-top: 8px;">Pro 플랜 기준</p>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Lifetime 총 수익</div>
+      <div class="stat-value" style="color: #2563eb;">₩<%= number_with_delimiter(@lifetime_revenue) %></div>
+      <p style="font-size: 14px; color: #6b7280; margin-top: 8px;">일회성 결제</p>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">전환율</div>
+      <div class="stat-value"><%= @conversion_rate %>%</div>
+      <p style="font-size: 14px; color: #6b7280; margin-top: 8px;">Free → 유료</p>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">최근 30일 활성 사용자</div>
+      <div class="stat-value"><%= @active_users %>명</div>
+      <p style="font-size: 14px; color: #6b7280; margin-top: 8px;">링크 생성 기준</p>
+    </div>
+  </div>
+
+  <!-- 플랜별 링크 통계 -->
+  <h2 style="margin: 40px 0 20px 0; color: #1f2937;">플랜별 링크 통계</h2>
+  <div class="links-section">
+    <table style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr style="background: #f9fafb; border-bottom: 2px solid #e5e7eb;">
+          <th style="padding: 12px; text-align: left;">플랜</th>
+          <th style="padding: 12px; text-align: right;">링크 수</th>
+          <th style="padding: 12px; text-align: right;">총 클릭 수</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @links_by_plan.each do |stat| %>
+          <tr style="border-bottom: 1px solid #e5e7eb;">
+            <td style="padding: 12px;">
+              <span class="badge-<%= stat.plan_name %>"><%= stat.plan_name.capitalize %></span>
+            </td>
+            <td style="padding: 12px; text-align: right;"><%= stat.link_count %>개</td>
+            <td style="padding: 12px; text-align: right;"><%= number_with_delimiter(stat.total_clicks || 0) %>회</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 인기 링크 TOP 10 -->
+  <h2 style="margin: 40px 0 20px 0; color: #1f2937;">🏆 인기 링크 TOP 10</h2>
+  <div class="links-section">
+    <% if @top_links.any? %>
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr style="background: #f9fafb; border-bottom: 2px solid #e5e7eb;">
+            <th style="padding: 12px; text-align: left;">순위</th>
+            <th style="padding: 12px; text-align: left;">코드</th>
+            <th style="padding: 12px; text-align: left;">원본 URL</th>
+            <th style="padding: 12px; text-align: right;">클릭 수</th>
+            <th style="padding: 12px; text-align: left;">생성자</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @top_links.each_with_index do |link, index| %>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 12px;">
+                <% if index < 3 %>
+                  <span style="font-size: 20px;"><%= ['🥇', '🥈', '🥉'][index] %></span>
+                <% else %>
+                  <span style="color: #6b7280;"><%= index + 1 %></span>
+                <% end %>
+              </td>
+              <td style="padding: 12px;">
+                <code class="link-code"><%= link.code %></code>
+              </td>
+              <td style="padding: 12px; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                <%= truncate(link.original_url, length: 50) %>
+              </td>
+              <td style="padding: 12px; text-align: right; font-weight: 600; color: #2563eb;">
+                <%= number_with_delimiter(link.click_count) %>
+              </td>
+              <td style="padding: 12px; color: #6b7280;">
+                <%= link.user_email || '게스트' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="empty-state">
+        <p>아직 링크가 없습니다.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

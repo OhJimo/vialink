@@ -30,16 +30,6 @@
     <%= f.text_field :cta_button_text, placeholder: "자세히 보기", class: 'form-input' %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :cta_position, "버튼 위치" %>
-    <%= f.select :cta_position, [["왼쪽", "left"], ["가운데", "center"], ["오른쪽", "right"]], { selected: "center" }, class: 'form-select' %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :cta_color, "버튼 배경색" %>
-    <%= f.color_field :cta_color, value: "#2563eb", class: 'form-color-input' %>
-  </div>
-
   <div class="form-submit">
     <%= f.submit "링크 생성", class: 'btn-primary' %>
   </div>
